@@ -220,7 +220,7 @@ public class PantallaJuego implements Screen {
 	    	    b.draw(batch);
 				if(nave.checkCollision(b)){
 					pDispDoble.remove(i);
-					b.activa();
+					nave.potenciador(b);
 					i--;
 				}
 			}
