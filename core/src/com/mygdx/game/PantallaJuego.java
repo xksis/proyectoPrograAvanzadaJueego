@@ -219,8 +219,8 @@ public class PantallaJuego implements Screen {
 	    	    DisparoDoble b=pDispDoble.get(i);
 	    	    b.draw(batch);
 				if(nave.checkCollision(b)){
-					activDisp(b);
 					pDispDoble.remove(i);
+					b.activa();
 					i--;
 				}
 			}
@@ -284,10 +284,6 @@ public class PantallaJuego implements Screen {
 		// TODO Auto-generated method stub
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
-	}
-
-	public void activDisp(DisparoDoble b){
-		b.activa();
 	}
    
 }

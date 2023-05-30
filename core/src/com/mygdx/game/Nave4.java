@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Nave4 {
     private boolean destruida = false;
-    private int vidas = 3;
+    private int vidas = 999;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -53,20 +53,18 @@ public class Nave4 {
 
             spr.draw(batch);
 
-            // disparo
+            // disparo regular
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
                 juego.agregarBala(bala);
                 soundBala.play();
             }
 
-            // Interacción con DisparoDoble
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                if (disparoDoble.getEstado() == 1) {
-                    disparoDoble.disparo();
-                    Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-20,spr.getY()+ spr.getHeight()-20,0,3,txBala);
-	                juego.agregarBala(bala);
-                }
+            // disparo doble
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && disparoDoble.getEstado() == Potenciador.ACTIVO) {
+                disparoDoble.disparo();
+                Bullet balaDoble = new Bullet(spr.getX() + spr.getWidth() / 2 - 20, spr.getY() + spr.getHeight() - 20, 0, 3, txBala);
+                juego.agregarBala(balaDoble);
             }
         } else {
             spr.setX(spr.getX() + MathUtils.random(-2, 2));
@@ -97,13 +95,6 @@ public class Nave4 {
             yVel = -yVel;
             b.setySpeed(-b.getySpeed());
 
-            // despegar sprites
-            /* int cont = 0;
-            while (b.getArea().overlaps(spr.getBoundingRectangle()) && cont < xVel) {
-               spr.setX(spr.getX() + Math.signum(xVel));
-            } */
-
-            // actualizar vidas y herir
             vidas--;
             herido = true;
             tiempoHerido = tiempoHeridoMax;
@@ -128,13 +119,6 @@ public class Nave4 {
             yVel = -yVel;
             b.setySpeed(-b.getySpeed());
 
-            // despegar sprites
-            /* int cont = 0;
-            while (b.getArea().overlaps(spr.getBoundingRectangle()) && cont < xVel) {
-               spr.setX(spr.getX() + Math.signum(xVel));
-            } */
-
-            // actualizar vidas y herir
             vidas = vidas - 2;
             herido = true;
             tiempoHerido = tiempoHeridoMax;
