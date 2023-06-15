@@ -33,6 +33,7 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<Ball3> balls4 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 	private  ArrayList<DisparoDoble> pDispDoble = new ArrayList<>();
+	private  ArrayList<VidaExtra> pVidExt = new ArrayList<>();
 
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
@@ -84,14 +85,24 @@ public class PantallaJuego implements Screen {
 	  	    balls4.add(bb);
 	  	}
 
-		//crear potenciador
+		//crear potenciador DisparoDoble
 		Random a = new Random();
-	    for (int i = 0; i < 1; i++) {
+	    for (int i = 0; i < 0; i++) {
 	        DisparoDoble disp = new DisparoDoble(a.nextInt((int)Gdx.graphics.getWidth()),
 	  	            50+a.nextInt((int)Gdx.graphics.getHeight()-50),
 	  	            20+a.nextInt(10), velXAsteroides+a.nextInt(4), 
 	  	            new Texture(Gdx.files.internal("powerup.png")));	   
 	  	    pDispDoble.add(disp);
+	  	}
+
+		//crear potenciador vida Extra
+		Random b = new Random();
+	    for (int i = 0; i < 1; i++) {
+	        VidaExtra vidExt = new VidaExtra(b.nextInt((int)Gdx.graphics.getWidth()),
+	  	            50+b.nextInt((int)Gdx.graphics.getHeight()-50),
+	  	            20+b.nextInt(10), velXAsteroides+b.nextInt(4), 
+	  	            new Texture(Gdx.files.internal("powerup.png")));	   
+	  	    pVidExt.add(vidExt);
 	  	}
 	}
     
@@ -224,6 +235,19 @@ public class PantallaJuego implements Screen {
 					i--;
 				}
 			}
+
+			for (VidaExtra potVidaExt : pVidExt) {
+				potVidaExt.update();
+			}
+
+			for (int i = 0; i < pVidExt.size(); i++) {
+	    	    VidaExtra b=pVidExt.get(i);
+	    	    b.draw(batch);
+				if(nave.checkCollision(b)){
+					pVidExt.remove(i);
+					i--;
+				}
+			}
 	      
 	      if (nave.estaDestruido()) {
   			if (score > game.getHighScore())
@@ -237,7 +261,7 @@ public class PantallaJuego implements Screen {
 	      //nivel completado
 	      if (balls1.size()==0) {
 			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score, 
-					velXAsteroides+3, velYAsteroides+3, cantAsteroides+10);
+					velXAsteroides+1, velYAsteroides+1, cantAsteroides+3);
 			ss.resize(1200, 800);
 			game.setScreen(ss);
 			dispose();

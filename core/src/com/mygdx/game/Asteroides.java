@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Asteroides{
-    protected int x;
-    protected int y;
-    protected int xSpeed;
-    protected int ySpeed;
-    protected Sprite spr;
+    private int x;
+    private int y;
+    private int xSpeed;
+    private int ySpeed;
+    private Sprite spr;
 
     public void update() {
         x += getXSpeed();
@@ -32,7 +32,7 @@ public abstract class Asteroides{
     }
     
     public void checkCollision(Ball2 b2) {
-        if(spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())){
+        if(spr.getBoundingRectangle().overlaps(b2.getSpr().getBoundingRectangle())){
         	// rebote
             if (getXSpeed() ==0) setXSpeed(getXSpeed() + b2.getXSpeed()/2);
             if (b2.getXSpeed() ==0) b2.setXSpeed(b2.getXSpeed() + getXSpeed()/2);
@@ -47,7 +47,7 @@ public abstract class Asteroides{
     }
 
     public void checkCollision(Ball3 b2) {
-        if(spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())){
+        if(spr.getBoundingRectangle().overlaps(b2.getSpr().getBoundingRectangle())){
         	// rebote
             if (getXSpeed() ==0) setXSpeed(getXSpeed() + b2.getXSpeed()/2);
             if (b2.getXSpeed() ==0) b2.setXSpeed(b2.getXSpeed() + getXSpeed()/2);
@@ -60,6 +60,32 @@ public abstract class Asteroides{
             b2.setySpeed(- b2.getySpeed()); 
         }
     }
+
+    public int getX(){
+        return this.x;
+    }
+
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getY(){
+        return this.y;
+    }
+
+    public void setY(int y){
+        this.y = y;
+    }
+
+    public Sprite getSpr(){
+        return this.spr;
+    }
+
+    public void setSpr(Sprite spr){
+        this.spr = spr;
+    }
+
+
 	public int getXSpeed() {
 		return xSpeed;
 	}

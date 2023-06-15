@@ -20,7 +20,7 @@ public class Nave4 {
     private boolean herido = false;
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
-    private boolean consumioPotenciador;
+    private boolean consumioDispDoble;
     private DisparoDoble disparoDoble;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
@@ -39,10 +39,23 @@ public class Nave4 {
         float y = spr.getY();
         if (!herido) {
             // que se mueva con teclado
-            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) xVel--;
-            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) xVel++;
-            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) yVel--;
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) yVel++;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                xVel = -5;
+                yVel = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                xVel = 5;
+                yVel = 0;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                xVel = 0;
+                yVel = -5;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                xVel = 0;
+                yVel = 5;
+            }
+
 
             // que se mantenga dentro de los bordes de la ventana
             if (x + xVel < 0 || x + xVel + spr.getWidth() > Gdx.graphics.getWidth())
@@ -63,10 +76,11 @@ public class Nave4 {
 
             // Interacción con DisparoDoble
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                if (disparoDoble.getEstado() == 1) {
+                if (this.consumioDispDoble == true) {
                     disparoDoble.disparo();
                     Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-20,spr.getY()+ spr.getHeight()-20,0,3,txBala);
 	                juego.agregarBala(bala);
+                    desPotenciador(disparoDoble);
                 }
             }
         } else {
@@ -80,10 +94,18 @@ public class Nave4 {
 
     public boolean checkCollision(DisparoDoble b) {
         if (b.getArea().overlaps(spr.getBoundingRectangle())){
-            consumioPotenciador = true;
+            consumioDispDoble = true;
             return true;
         }
-        consumioPotenciador = false;
+        consumioDispDoble = false;
+        return false;
+    }
+
+    public boolean checkCollision(VidaExtra b) {
+        if (b.getArea().overlaps(spr.getBoundingRectangle())){
+            this.vidas++;
+            return true;
+        }
         return false;
     }
 
@@ -174,8 +196,14 @@ public class Nave4 {
     }
 
     public void potenciador(DisparoDoble b){
-        if (this.consumioPotenciador == true){
+        if (this.consumioDispDoble == true){
             b.activa();
+        }
+    }
+
+    public void desPotenciador(DisparoDoble b){
+        if(b.getEstado() == 2){
+            this.consumioDispDoble = false;
         }
     }
 }
